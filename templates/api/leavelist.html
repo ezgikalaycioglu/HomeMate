@@ -1,0 +1,19 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<div class="header-bar">
+    <a href="{% url 'group-list' %}">&#8592; Go Back To Lists</a>
+</div>
+
+
+
+<div class="card-body">
+    <p>{{ message }}</p>
+    <form action="{% url 'leave-list' groupid%}" method="POST">
+        {% csrf_token %}
+        <button  type="submit" class="button" name="submit" id="submit">Yes</button>
+    </div>
+</div>
+
+{% endblock content %}

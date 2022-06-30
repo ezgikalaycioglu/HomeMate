@@ -1,0 +1,41 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<div class="header-bar">
+    <a href="{% url 'group-list' %}">&#8592; Go Back To Lists</a>
+</div>
+
+<p>To add friends in a list copy the group code and share it with your friend</p>
+<p>List Code:</p>
+<input id="myInput" value="{{groupcode}}" readonly>
+<button onclick="Hello()">Copy List Code</button>
+<div class="copied" style="visibility: hidden;">copied!</div>
+<p>Group Members:</p>
+<div id="tasklist" class="task-items-wrapper">
+    {% for groupmember in groupmembers %}
+    <div class="task-wrapper" data-position="{{task.pk}}">
+        <div class="task-title">
+            <i>{{groupmember}}</i>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+
+
+
+
+<script>
+    function Hello() {
+    var copyText = document.getElementById('myInput')
+    copyText.select();
+    document.execCommand('copy')
+    var hid = document.getElementsByClassName("copied");
+    if(hid[0].offsetWidth > 0 && hid[0].offsetHeight > 0) {
+        hid[0].style.visibility = "visible";
+    }
+  }
+</script>
+
+{% endblock content %}

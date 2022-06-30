@@ -1,0 +1,71 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="header-bar">
+        <div>
+            {% if tasks %}
+            <a href="{% url 'group-list' %}">&#8592; Go Back To Lists</a>
+            {% endif %}
+            <p>{{groupname}}</p>
+        </div>
+
+        {% if request.user.is_authenticated %}
+        <a href="{% url 'logout' %}">Logout</a>
+        {% else %}
+        <a href="{% url 'login' %}">Login</a>
+        {% endif %}
+
+    </div>
+
+
+
+                <div id="add-add-wrapper">
+                            <form method="POST" style="max-width: max-content;">
+                                {% csrf_token %}
+                                {{form.as_p}}
+                                <input type="submit" value="Add To List" id="mybutton">
+                            </form>
+                </div>
+
+
+        {% if tasks %}
+        <div id="search-add-wrapper">
+            <form method="GET" style="display: flex;">
+                <input type="text" name="search_area" value="{{search_input}}" id="searchinput">
+                <input type="submit" value="Search" id="button" >
+            </form>
+        </div>
+        {% endif %}
+
+        <div id="tasklist" class="task-items-wrapper">
+            {% for task in tasks %}
+            <div class="task-wrapper" data-position="{{task.pk}}">
+                <div class="task-title">
+                    {% if task.completed %}
+                    <div style="padding-right: 10px;">
+                        <form action="{% url 'task-uncomplete' task.id groupid %}" method="get">
+                            <input type="submit" class="btn" value="&#43" name="mybtnuc" id="mybtnuc">
+                        </form>
+                    </div>
+                    <i><s><a href="{% url 'task-update' task.id groupid %}">{{task}}</a></s></i>
+                    {% else %}
+                    <div style="padding-right: 10px;">
+                        <form action="{% url 'task-complete' task.id groupid %}" method="get">
+                            <input type="submit" class="btn" value=" " name="mybtn" id="mybtn">
+                        </form>
+                    </div>
+                    <a href="{% url 'task-update' task.id groupid %}">{{task}}</a> 
+                    <div style="padding-left: 10px;">
+                        <i>{{task.quantity}}</i> 
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="task-controls">
+                    <a class="delete-link" href="{% url 'task-delete' task.id groupid %}">Delete</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+</div>
+{% endblock content %}
